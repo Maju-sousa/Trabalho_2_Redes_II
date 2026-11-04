@@ -1,0 +1,10 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.py[cod]
+results/**
+results_QUICK/**
+analysis/**
+analysis_QUICK/**
+data/*.bin

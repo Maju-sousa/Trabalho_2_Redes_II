@@ -1,0 +1,72 @@
+
+version: '3.8'
+
+services:
+  server-http1:
+    image: nginx:alpine
+    container_name: server_http11
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data:/usr/share/nginx/html:ro
+    networks:
+      net_bench:
+        ipv4_address: 172.20.0.10
+
+  server-http2:
+    image: nginx:alpine
+    container_name: server_http2_tls
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "8443:443"
+    volumes:
+      - ./data:/usr/share/nginx/html:ro
+      - ./certs:/etc/nginx/certs:ro
+      - ./nginx/http2-tls.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      net_bench:
+        ipv4_address: 172.20.0.20
+
+  server-http3:
+    image: caddy:2.7-alpine
+    container_name: server_http3_quic
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "9443:443/tcp"
+      - "9443:443/udp"
+    volumes:
+      - ./data:/srv:ro
+      - ./certs:/etc/caddy/certs:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      net_bench:
+        ipv4_address: 172.20.0.30
+
+  # Cliente de benchmark DENTRO da rede Docker: fala direto com 172.20.0.x (sem docker-proxy)
+  # e recebe o seu próprio netem (atraso de ida), de modo que RTT = atraso_cliente + atraso_servidor.
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: bench_client
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0   # aioquic usa socket IPv6 dual-stack
+    volumes:
+      - ./:/app
+    command: sleep infinity
+    networks:
+      net_bench:
+        ipv4_address: 172.20.0.100
+
+networks:
+  net_bench:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

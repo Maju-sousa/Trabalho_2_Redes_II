@@ -1,0 +1,13 @@
+{
+	auto_https off
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+https://:443 {
+	tls /etc/caddy/certs/cert.pem /etc/caddy/certs/key.pem
+	root * /srv
+	header Cache-Control "no-store"
+	file_server
+}

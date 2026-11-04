@@ -1,0 +1,17 @@
+[netem] server_http11 -> netem delay 0.5ms
+[netem] server_http2_tls -> netem delay 0.5ms
+[netem] server_http3_quic -> netem delay 0.5ms
+[netem] bench_client -> netem delay 0.5ms
+[netem] cenário lan: RTT esperado = 2 x 0.5ms  (perda esperada ~ 0%)
+[netem] ping bench_client -> 172.20.0.10:
+--- 172.20.0.10 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3803ms
+rtt min/avg/max/mdev = 1.258/1.494/2.272/0.239 ms
+[netem] ping bench_client -> 172.20.0.20:
+--- 172.20.0.20 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3805ms
+rtt min/avg/max/mdev = 1.286/1.543/3.130/0.392 ms
+[netem] ping bench_client -> 172.20.0.30:
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3807ms
+rtt min/avg/max/mdev = 1.265/1.467/3.133/0.386 ms

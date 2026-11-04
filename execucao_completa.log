@@ -1,0 +1,522 @@
+>>> Iniciando os contêineres (dependências Python instaladas na imagem do cliente)...
+time="2026-11-01T17:20:08-03:00" level=warning msg="C:\\Users\\julia\\Downloads\\TP2_corrigido_ajustado (1)\\TP2_\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Image tp2-client Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 574B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load build definition from Dockerfile.client
+#2 transferring dockerfile: 413B 0.1s done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 1.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 153B 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/5] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159
+#6 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.1s done
+#6 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 37B 0.0s done
+#5 DONE 0.0s
+
+#7 [2/5] RUN apt-get update     && apt-get install -y --no-install-recommends iproute2 iputils-ping     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/5] COPY requirements.txt /tmp/requirements.txt
+#8 CACHED
+
+#9 [4/5] RUN python -m pip install --no-cache-dir -r /tmp/requirements.txt     && rm /tmp/requirements.txt
+#9 CACHED
+
+#10 [5/5] WORKDIR /app
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers 0.0s done
+#11 exporting manifest sha256:4fb4e1511fc8c5bbf65acfbab18fcd36afef60dbf9891dd024ad7445a6b0e226 done
+#11 exporting config sha256:3f182315c417c88c09f8781bb948a3a29fa2b8e6d1e17f31a09609b23ae90aae done
+#11 exporting attestation manifest sha256:78e5e3f9d6b921f645c7eeedcf0511be98d3d846b9a94231d5777bd49a712dc8
+#11 exporting attestation manifest sha256:78e5e3f9d6b921f645c7eeedcf0511be98d3d846b9a94231d5777bd49a712dc8 0.0s done
+#11 exporting manifest list sha256:a950eb48ba7004acda484be1f82935f17afde72596239b7f215be6016ccd1347 0.0s done
+#11 naming to docker.io/library/tp2-client:latest done
+#11 unpacking to docker.io/library/tp2-client:latest 0.0s done
+#11 DONE 0.3s
+
+#12 resolving provenance for metadata file
+#12 DONE 0.1s
+ Image tp2-client Built 
+ Network tp2_net_bench Creating 
+ Network tp2_net_bench Creating 
+ Network tp2_net_bench Created 
+ Network tp2_net_bench Created 
+ Container server_http3_quic Creating 
+ Container server_http2_tls Creating 
+ Container bench_client Creating 
+ Container server_http11 Creating 
+ Container server_http3_quic Created 
+ Container server_http11 Created 
+ Container server_http2_tls Created 
+ Container bench_client Created 
+ Container server_http2_tls Starting 
+ Container bench_client Starting 
+ Container server_http11 Starting 
+ Container server_http3_quic Starting 
+ Container server_http2_tls Started 
+ Container bench_client Started 
+ Container server_http11 Started 
+ Container server_http3_quic Started 
+>>> Gerando/validando os arquivos de carga dentro do cliente...
+large.bin: já está correto (50,000,000 bytes).
+small.bin: já está correto (10,000 bytes).
+Cargas prontas em data/.
+
+>>> Aplicando cenário LAN (cold_lan) e salvando a validação RTT...
+[netem] server_http11 -> netem delay 0.5ms
+[netem] server_http2_tls -> netem delay 0.5ms
+[netem] server_http3_quic -> netem delay 0.5ms
+[netem] bench_client -> netem delay 0.5ms
+[netem] cenário lan: RTT esperado = 2 x 0.5ms  (perda esperada ~ 0%)
+[netem] ping bench_client -> 172.20.0.10:
+--- 172.20.0.10 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3803ms
+rtt min/avg/max/mdev = 1.258/1.494/2.272/0.239 ms
+[netem] ping bench_client -> 172.20.0.20:
+--- 172.20.0.20 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3805ms
+rtt min/avg/max/mdev = 1.286/1.543/3.130/0.392 ms
+[netem] ping bench_client -> 172.20.0.30:
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3807ms
+rtt min/avg/max/mdev = 1.265/1.467/3.133/0.386 ms
+---- cold_http1_lan: http1 | LAN | cold
+[http1/LAN] COLD x30, repetição 1
+{"requests_success": 30, "requests_failed": 0, "ttfb_p50_ms": 0.441, "handshake_p50_ms": 3.3594999999999997}
+Arquivo gravado: results/cold_http1_lan.json  (falhas: 0)
+---- cold_http2_lan: http2 | LAN | cold
+[http2/LAN] COLD x30, repetição 1
+{"requests_success": 30, "requests_failed": 0, "ttfb_p50_ms": 0.098, "handshake_p50_ms": 10.4025}
+Arquivo gravado: results/cold_http2_lan.json  (falhas: 0)
+---- cold_http3_lan: http3 | LAN | cold
+[http3/LAN] COLD x30, repetição 1
+{"requests_success": 30, "requests_failed": 0, "ttfb_p50_ms": 0.492, "handshake_p50_ms": 13.9945}
+Arquivo gravado: results/cold_http3_lan.json  (falhas: 0)
+[netem] server_http11: qdisc netem removida
+[netem] server_http2_tls: qdisc netem removida
+[netem] server_http3_quic: qdisc netem removida
+[netem] bench_client: qdisc netem removida
+
+>>> Aplicando cenário WAN (cold_wan) e salvando a validação RTT...
+[netem] server_http11 -> netem delay 25ms loss 2%
+[netem] server_http2_tls -> netem delay 25ms loss 2%
+[netem] server_http3_quic -> netem delay 25ms loss 2%
+[netem] bench_client -> netem delay 25ms
+[netem] cenário wan: RTT esperado = 2 x 25ms  (perda esperada ~  loss 2%)
+[netem] ping bench_client -> 172.20.0.10:
+--- 172.20.0.10 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3806ms
+rtt min/avg/max/mdev = 50.747/52.597/54.571/0.879 ms
+[netem] ping bench_client -> 172.20.0.20:
+--- 172.20.0.20 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3801ms
+rtt min/avg/max/mdev = 50.631/52.776/54.321/0.786 ms
+[netem] ping bench_client -> 172.20.0.30:
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 18 received, 10% packet loss, time 3806ms
+rtt min/avg/max/mdev = 50.530/52.845/54.714/0.976 ms
+---- cold_http1_wan: http1 | WAN | cold
+[http1/WAN] COLD x30, repetição 1
+{"requests_success": 30, "requests_failed": 0, "ttfb_p50_ms": 0.3665, "handshake_p50_ms": 53.2945}
+Arquivo gravado: results/cold_http1_wan.json  (falhas: 0)
+---- cold_http2_wan: http2 | WAN | cold
+[http2/WAN] COLD x30, repetição 1
+{"requests_success": 30, "requests_failed": 0, "ttfb_p50_ms": 0.1155, "handshake_p50_ms": 108.968}
+Arquivo gravado: results/cold_http2_wan.json  (falhas: 0)
+---- cold_http3_wan: http3 | WAN | cold
+[http3/WAN] COLD x30, repetição 1
+{"requests_success": 30, "requests_failed": 0, "ttfb_p50_ms": 0.4605, "handshake_p50_ms": 65.0895}
+Arquivo gravado: results/cold_http3_wan.json  (falhas: 0)
+[netem] server_http11: qdisc netem removida
+[netem] server_http2_tls: qdisc netem removida
+[netem] server_http3_quic: qdisc netem removida
+[netem] bench_client: qdisc netem removida
+
+>>> Aplicando cenário LAN (T01-T03_lan) e salvando a validação RTT...
+[netem] server_http11 -> netem delay 0.5ms
+[netem] server_http2_tls -> netem delay 0.5ms
+[netem] server_http3_quic -> netem delay 0.5ms
+[netem] bench_client -> netem delay 0.5ms
+[netem] cenário lan: RTT esperado = 2 x 0.5ms  (perda esperada ~ 0%)
+[netem] ping bench_client -> 172.20.0.10:
+--- 172.20.0.10 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3803ms
+rtt min/avg/max/mdev = 1.272/1.462/2.478/0.271 ms
+[netem] ping bench_client -> 172.20.0.20:
+--- 172.20.0.20 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3800ms
+rtt min/avg/max/mdev = 1.266/1.356/1.615/0.080 ms
+[netem] ping bench_client -> 172.20.0.30:
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3805ms
+rtt min/avg/max/mdev = 1.235/1.468/2.005/0.163 ms
+---- T01_http1_lan_a: http1 | LAN | warm
+[http1/LAN] WARM Carga A, repetição 1
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.6163470650321533, "throughput_mbps": 246.5388260128613, "ttfb_p50_ms": 0.995, "total_p50_ms": 1622.157, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 2
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.8275641888950561, "throughput_mbps": 331.02567555802244, "ttfb_p50_ms": 1.654, "total_p50_ms": 1208.138, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 3
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.6851499199734988, "throughput_mbps": 274.0599679893995, "ttfb_p50_ms": 0.753, "total_p50_ms": 1459.304, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 4
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.9049909266786826, "throughput_mbps": 361.996370671473, "ttfb_p50_ms": 0.343, "total_p50_ms": 1104.471, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 5
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.8006905802519653, "throughput_mbps": 320.2762321007861, "ttfb_p50_ms": 1.05, "total_p50_ms": 1248.712, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 6
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.9879075658474654, "throughput_mbps": 395.1630263389862, "ttfb_p50_ms": 0.399, "total_p50_ms": 1012.045, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 7
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.8567129952783468, "throughput_mbps": 342.6851981113387, "ttfb_p50_ms": 0.337, "total_p50_ms": 1166.947, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 8
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.960071417024235, "throughput_mbps": 384.02856680969404, "ttfb_p50_ms": 0.743, "total_p50_ms": 1041.354, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 9
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 1.040371510341217, "throughput_mbps": 416.1486041364868, "ttfb_p50_ms": 0.531, "total_p50_ms": 960.954, "connections_total": 1}
+[http1/LAN] WARM Carga A, repetição 10
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.9765777485369196, "throughput_mbps": 390.6310994147678, "ttfb_p50_ms": 1.462, "total_p50_ms": 1023.705, "connections_total": 1}
+Arquivo gravado: results/T01_http1_lan_a.json  (falhas: 0)
+---- T02_http2_lan_a: http2 | LAN | warm
+[http2/LAN] WARM Carga A, repetição 1
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.7237665845440825, "throughput_mbps": 289.506633817633, "ttfb_p50_ms": 0.137, "total_p50_ms": 1381.304, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 2
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.7872774893322115, "throughput_mbps": 314.91099573288466, "ttfb_p50_ms": 0.164, "total_p50_ms": 1269.993, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 3
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.6888198885150669, "throughput_mbps": 275.52795540602676, "ttfb_p50_ms": 0.198, "total_p50_ms": 1451.547, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 4
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.7626194981953119, "throughput_mbps": 305.0477992781248, "ttfb_p50_ms": 0.2, "total_p50_ms": 1311.083, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 5
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.7388209538954346, "throughput_mbps": 295.52838155817386, "ttfb_p50_ms": 0.284, "total_p50_ms": 1353.325, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 6
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.7266442677066322, "throughput_mbps": 290.65770708265285, "ttfb_p50_ms": 0.251, "total_p50_ms": 1375.738, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 7
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.8001428651887154, "throughput_mbps": 320.0571460754861, "ttfb_p50_ms": 0.197, "total_p50_ms": 1249.598, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 8
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.7795747547562364, "throughput_mbps": 311.82990190249456, "ttfb_p50_ms": 0.12, "total_p50_ms": 1282.52, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 9
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.8261126243441395, "throughput_mbps": 330.4450497376558, "ttfb_p50_ms": 0.118, "total_p50_ms": 1210.26, "connections_total": 1}
+[http2/LAN] WARM Carga A, repetição 10
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.7964501084523161, "throughput_mbps": 318.5800433809265, "ttfb_p50_ms": 0.275, "total_p50_ms": 1255.362, "connections_total": 1}
+Arquivo gravado: results/T02_http2_lan_a.json  (falhas: 0)
+---- T03_http3_lan_a: http3 | LAN | warm
+[http3/LAN] WARM Carga A, repetição 1
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.11944326777662811, "throughput_mbps": 47.77730711065125, "ttfb_p50_ms": 0.507, "total_p50_ms": 8371.91, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 2
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.10635821860930582, "throughput_mbps": 42.54328744372232, "ttfb_p50_ms": 1.291, "total_p50_ms": 9401.979, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 3
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.11281435835178977, "throughput_mbps": 45.12574334071591, "ttfb_p50_ms": 0.739, "total_p50_ms": 8863.937, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 4
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.10907290635784134, "throughput_mbps": 43.62916254313654, "ttfb_p50_ms": 0.746, "total_p50_ms": 9168.021, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 5
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.1096172124551997, "throughput_mbps": 43.846884982079885, "ttfb_p50_ms": 1.224, "total_p50_ms": 9122.409, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 6
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.10478402953351744, "throughput_mbps": 41.91361181340697, "ttfb_p50_ms": 0.908, "total_p50_ms": 9543.29, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 7
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.10614232741865129, "throughput_mbps": 42.456930967460515, "ttfb_p50_ms": 0.796, "total_p50_ms": 9420.784, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 8
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.05808869365295, "throughput_mbps": 23.23547746118, "ttfb_p50_ms": 1.123, "total_p50_ms": 17214.881, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 9
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.05921408051592191, "throughput_mbps": 23.685632206368762, "ttfb_p50_ms": 0.904, "total_p50_ms": 16887.735, "connections_total": 1}
+[http3/LAN] WARM Carga A, repetição 10
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.08589005689115616, "throughput_mbps": 34.356022756462465, "ttfb_p50_ms": 0.781, "total_p50_ms": 11642.621, "connections_total": 1}
+Arquivo gravado: results/T03_http3_lan_a.json  (falhas: 0)
+[netem] server_http11: qdisc netem removida
+[netem] server_http2_tls: qdisc netem removida
+[netem] server_http3_quic: qdisc netem removida
+[netem] bench_client: qdisc netem removida
+
+>>> Aplicando cenário WAN (T04-T06_wan) e salvando a validação RTT...
+[netem] server_http11 -> netem delay 25ms loss 2%
+[netem] server_http2_tls -> netem delay 25ms loss 2%
+[netem] server_http3_quic -> netem delay 25ms loss 2%
+[netem] bench_client -> netem delay 25ms
+[netem] cenário wan: RTT esperado = 2 x 25ms  (perda esperada ~  loss 2%)
+[netem] ping bench_client -> 172.20.0.10:
+--- 172.20.0.10 ping statistics ---
+20 packets transmitted, 19 received, 5% packet loss, time 3803ms
+rtt min/avg/max/mdev = 51.675/52.911/54.494/0.609 ms
+[netem] ping bench_client -> 172.20.0.20:
+--- 172.20.0.20 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3807ms
+rtt min/avg/max/mdev = 50.699/52.907/54.485/1.097 ms
+[netem] ping bench_client -> 172.20.0.30:
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3797ms
+rtt min/avg/max/mdev = 51.265/53.051/54.662/0.887 ms
+---- T04_http1_wan_a: http1 | WAN | warm
+[http1/WAN] WARM Carga A, repetição 1
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006489478792425916, "throughput_mbps": 2.5957915169703663, "ttfb_p50_ms": 0.815, "total_p50_ms": 154091.421, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 2
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.0063892253537682795, "throughput_mbps": 2.555690141507312, "ttfb_p50_ms": 0.649, "total_p50_ms": 156508.825, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 3
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006331494836319626, "throughput_mbps": 2.5325979345278506, "ttfb_p50_ms": 0.449, "total_p50_ms": 157934.825, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 4
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006125708042254312, "throughput_mbps": 2.450283216901725, "ttfb_p50_ms": 0.337, "total_p50_ms": 163242.168, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 5
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006351426877202599, "throughput_mbps": 2.5405707508810393, "ttfb_p50_ms": 0.359, "total_p50_ms": 157441.019, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 6
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.005777449521612031, "throughput_mbps": 2.3109798086448126, "ttfb_p50_ms": 0.338, "total_p50_ms": 173084.821, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 7
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.007650563939996805, "throughput_mbps": 3.060225575998722, "ttfb_p50_ms": 0.401, "total_p50_ms": 130708.72, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 8
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.005871366388928688, "throughput_mbps": 2.3485465555714757, "ttfb_p50_ms": 1.413, "total_p50_ms": 170315.381, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 9
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006035279225570051, "throughput_mbps": 2.41411169022802, "ttfb_p50_ms": 0.797, "total_p50_ms": 165688.024, "connections_total": 1}
+[http1/WAN] WARM Carga A, repetição 10
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006057605206031245, "throughput_mbps": 2.4230420824124974, "ttfb_p50_ms": 0.502, "total_p50_ms": 165059.81, "connections_total": 1}
+Arquivo gravado: results/T04_http1_wan_a.json  (falhas: 0)
+---- T05_http2_wan_a: http2 | WAN | warm
+[http2/WAN] WARM Carga A, repetição 1
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006374935593145944, "throughput_mbps": 2.5499742372583776, "ttfb_p50_ms": 0.106, "total_p50_ms": 156860.396, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 2
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006061605471739052, "throughput_mbps": 2.424642188695621, "ttfb_p50_ms": 0.146, "total_p50_ms": 164970.989, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 3
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.00600310121244768, "throughput_mbps": 2.401240484979072, "ttfb_p50_ms": 0.093, "total_p50_ms": 166577.015, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 4
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006759159115631659, "throughput_mbps": 2.7036636462526635, "ttfb_p50_ms": 0.247, "total_p50_ms": 147945.848, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 5
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006667080115861671, "throughput_mbps": 2.666832046344668, "ttfb_p50_ms": 0.102, "total_p50_ms": 149989.616, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 6
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.0058820237214023754, "throughput_mbps": 2.35280948856095, "ttfb_p50_ms": 0.13, "total_p50_ms": 170006.141, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 7
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006156651321238827, "throughput_mbps": 2.4626605284955305, "ttfb_p50_ms": 0.112, "total_p50_ms": 162424.559, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 8
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006002946880948715, "throughput_mbps": 2.401178752379486, "ttfb_p50_ms": 0.105, "total_p50_ms": 166577.979, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 9
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006312132923505165, "throughput_mbps": 2.524853169402066, "ttfb_p50_ms": 0.301, "total_p50_ms": 158420.022, "connections_total": 1}
+[http2/WAN] WARM Carga A, repetição 10
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.006139258350771265, "throughput_mbps": 2.455703340308506, "ttfb_p50_ms": 1.311, "total_p50_ms": 162881.442, "connections_total": 1}
+Arquivo gravado: results/T05_http2_wan_a.json  (falhas: 0)
+---- T06_http3_wan_a: http3 | WAN | warm
+[http3/WAN] WARM Carga A, repetição 1
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.00894501064468763, "throughput_mbps": 3.578004257875052, "ttfb_p50_ms": 0.576, "total_p50_ms": 111790.984, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 2
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.008892169632822309, "throughput_mbps": 3.5568678531289235, "ttfb_p50_ms": 0.777, "total_p50_ms": 112458.065, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 3
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.008885364235495661, "throughput_mbps": 3.5541456941982643, "ttfb_p50_ms": 0.43, "total_p50_ms": 112544.278, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 4
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.009149353993518218, "throughput_mbps": 3.659741597407287, "ttfb_p50_ms": 0.404, "total_p50_ms": 109296.747, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 5
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.009215712296014889, "throughput_mbps": 3.686284918405956, "ttfb_p50_ms": 0.361, "total_p50_ms": 108510.022, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 6
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.009047250744665222, "throughput_mbps": 3.6189002978660882, "ttfb_p50_ms": 0.23, "total_p50_ms": 110530.49, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 7
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.008616240288035735, "throughput_mbps": 3.446496115214294, "ttfb_p50_ms": 0.224, "total_p50_ms": 116054.671, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 8
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.009273731858593093, "throughput_mbps": 3.709492743437237, "ttfb_p50_ms": 0.408, "total_p50_ms": 107829.737, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 9
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.008837427331543473, "throughput_mbps": 3.534970932617389, "ttfb_p50_ms": 0.204, "total_p50_ms": 113152.0, "connections_total": 1}
+[http3/WAN] WARM Carga A, repetição 10
+{"profile": "Carga A", "requests_success": 1, "requests_failed": 0, "rps": 0.008888604937150114, "throughput_mbps": 3.555441974860045, "ttfb_p50_ms": 0.214, "total_p50_ms": 112502.702, "connections_total": 1}
+Arquivo gravado: results/T06_http3_wan_a.json  (falhas: 0)
+[netem] server_http11: qdisc netem removida
+[netem] server_http2_tls: qdisc netem removida
+[netem] server_http3_quic: qdisc netem removida
+[netem] bench_client: qdisc netem removida
+
+>>> Aplicando cenário LAN (T07-T09_lan) e salvando a validação RTT...
+[netem] server_http11 -> netem delay 0.5ms
+[netem] server_http2_tls -> netem delay 0.5ms
+[netem] server_http3_quic -> netem delay 0.5ms
+[netem] bench_client -> netem delay 0.5ms
+[netem] cenário lan: RTT esperado = 2 x 0.5ms  (perda esperada ~ 0%)
+[netem] ping bench_client -> 172.20.0.10:
+--- 172.20.0.10 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3808ms
+rtt min/avg/max/mdev = 1.200/1.524/3.557/0.565 ms
+[netem] ping bench_client -> 172.20.0.20:
+--- 172.20.0.20 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3805ms
+rtt min/avg/max/mdev = 1.206/1.847/2.764/0.517 ms
+[netem] ping bench_client -> 172.20.0.30:
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3813ms
+rtt min/avg/max/mdev = 1.212/1.397/2.048/0.172 ms
+---- T07_http1_lan_b: http1 | LAN | warm
+[http1/LAN] WARM Carga B, aquecimento descartado 1
+[http1/LAN] WARM Carga B, repetição 1
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 141.94597541839045, "throughput_mbps": 11.355678033471236, "ttfb_p50_ms": 0.0655, "total_p50_ms": 474.12149999999997, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 2
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 142.1490802154054, "throughput_mbps": 11.371926417232432, "ttfb_p50_ms": 0.064, "total_p50_ms": 460.9625, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 3
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 127.57525498765013, "throughput_mbps": 10.20602039901201, "ttfb_p50_ms": 0.074, "total_p50_ms": 538.233, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 4
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 143.92978699657277, "throughput_mbps": 11.514382959725822, "ttfb_p50_ms": 0.067, "total_p50_ms": 449.64300000000003, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 5
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 140.14173065752175, "throughput_mbps": 11.21133845260174, "ttfb_p50_ms": 0.068, "total_p50_ms": 481.7175, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 6
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 128.31501685640782, "throughput_mbps": 10.265201348512626, "ttfb_p50_ms": 0.067, "total_p50_ms": 520.9114999999999, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 7
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 111.73829280997435, "throughput_mbps": 8.939063424797949, "ttfb_p50_ms": 0.063, "total_p50_ms": 538.8065, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 8
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 122.7257516086022, "throughput_mbps": 9.818060128688176, "ttfb_p50_ms": 0.086, "total_p50_ms": 571.2905000000001, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 9
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 92.0201679313318, "throughput_mbps": 7.361613434506544, "ttfb_p50_ms": 0.107, "total_p50_ms": 693.1289999999999, "connections_total": 100}
+[http1/LAN] WARM Carga B, repetição 10
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 131.75389487060806, "throughput_mbps": 10.540311589648644, "ttfb_p50_ms": 0.069, "total_p50_ms": 499.60249999999996, "connections_total": 100}
+Arquivo gravado: results/T07_http1_lan_b.json  (falhas: 0)
+---- T08_http2_lan_b: http2 | LAN | warm
+[http2/LAN] WARM Carga B, aquecimento descartado 1
+[http2/LAN] WARM Carga B, repetição 1
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 173.08297245988837, "throughput_mbps": 13.84663779679107, "ttfb_p50_ms": 2.041, "total_p50_ms": 306.79449999999997, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 2
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 180.86877301789707, "throughput_mbps": 14.469501841431766, "ttfb_p50_ms": 5.032500000000001, "total_p50_ms": 296.45000000000005, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 3
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 189.22718293901747, "throughput_mbps": 15.138174635121398, "ttfb_p50_ms": 0.1995, "total_p50_ms": 271.903, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 4
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 187.74484415264067, "throughput_mbps": 15.019587532211252, "ttfb_p50_ms": 0.169, "total_p50_ms": 272.158, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 5
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 190.91682104429458, "throughput_mbps": 15.273345683543567, "ttfb_p50_ms": 7.0025, "total_p50_ms": 292.0265, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 6
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 182.97170095791023, "throughput_mbps": 14.637736076632818, "ttfb_p50_ms": 0.138, "total_p50_ms": 278.8175, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 7
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 179.12282043012704, "throughput_mbps": 14.329825634410163, "ttfb_p50_ms": 0.1335, "total_p50_ms": 287.8675, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 8
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 172.55533667629106, "throughput_mbps": 13.804426934103285, "ttfb_p50_ms": 0.17099999999999999, "total_p50_ms": 299.356, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 9
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 118.23673239374497, "throughput_mbps": 9.4589385914996, "ttfb_p50_ms": 1.8904999999999998, "total_p50_ms": 512.4825000000001, "connections_total": 1}
+[http2/LAN] WARM Carga B, repetição 10
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 187.08028491359664, "throughput_mbps": 14.966422793087732, "ttfb_p50_ms": 0.567, "total_p50_ms": 270.7835, "connections_total": 1}
+Arquivo gravado: results/T08_http2_lan_b.json  (falhas: 0)
+---- T09_http3_lan_b: http3 | LAN | warm
+[http3/LAN] WARM Carga B, aquecimento descartado 1
+[http3/LAN] WARM Carga B, repetição 1
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 210.01261476436585, "throughput_mbps": 16.801009181149272, "ttfb_p50_ms": 21.688499999999998, "total_p50_ms": 404.6595, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 2
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 222.2599160214844, "throughput_mbps": 17.780793281718754, "ttfb_p50_ms": 21.7205, "total_p50_ms": 370.998, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 3
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 231.99222632992766, "throughput_mbps": 18.559378106394213, "ttfb_p50_ms": 28.593, "total_p50_ms": 367.0455, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 4
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 222.51006866394232, "throughput_mbps": 17.800805493115387, "ttfb_p50_ms": 26.2705, "total_p50_ms": 382.79150000000004, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 5
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 194.92755614775808, "throughput_mbps": 15.594204491820646, "ttfb_p50_ms": 40.7365, "total_p50_ms": 445.788, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 6
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 216.77035435792902, "throughput_mbps": 17.34162834863432, "ttfb_p50_ms": 20.575, "total_p50_ms": 395.769, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 7
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 223.1273317976315, "throughput_mbps": 17.85018654381052, "ttfb_p50_ms": 32.1175, "total_p50_ms": 379.3625, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 8
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 224.95980457549237, "throughput_mbps": 17.99678436603939, "ttfb_p50_ms": 23.299999999999997, "total_p50_ms": 365.118, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 9
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 196.01730280035886, "throughput_mbps": 15.681384224028708, "ttfb_p50_ms": 31.686, "total_p50_ms": 434.927, "connections_total": 1}
+[http3/LAN] WARM Carga B, repetição 10
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 193.656252255126, "throughput_mbps": 15.49250018041008, "ttfb_p50_ms": 31.04, "total_p50_ms": 452.9755, "connections_total": 1}
+Arquivo gravado: results/T09_http3_lan_b.json  (falhas: 0)
+[netem] server_http11: qdisc netem removida
+[netem] server_http2_tls: qdisc netem removida
+[netem] server_http3_quic: qdisc netem removida
+[netem] bench_client: qdisc netem removida
+
+>>> Aplicando cenário WAN (T10-T12_wan) e salvando a validação RTT...
+[netem] server_http11 -> netem delay 25ms loss 2%
+[netem] server_http2_tls -> netem delay 25ms loss 2%
+[netem] server_http3_quic -> netem delay 25ms loss 2%
+[netem] bench_client -> netem delay 25ms
+[netem] cenário wan: RTT esperado = 2 x 25ms  (perda esperada ~  loss 2%)
+[netem] ping bench_client -> 172.20.0.10:
+--- 172.20.0.10 ping statistics ---
+20 packets transmitted, 19 received, 5% packet loss, time 3814ms
+rtt min/avg/max/mdev = 50.276/50.618/51.217/0.204 ms
+[netem] ping bench_client -> 172.20.0.20:
+--- 172.20.0.20 ping statistics ---
+20 packets transmitted, 19 received, 5% packet loss, time 3808ms
+rtt min/avg/max/mdev = 50.377/50.730/51.140/0.150 ms
+[netem] ping bench_client -> 172.20.0.30:
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3810ms
+rtt min/avg/max/mdev = 50.321/50.975/51.312/0.253 ms
+---- T10_http1_wan_b: http1 | WAN | warm
+[http1/WAN] WARM Carga B, aquecimento descartado 1
+[http1/WAN] WARM Carga B, repetição 1
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 71.88673826866004, "throughput_mbps": 5.7509390614928035, "ttfb_p50_ms": 0.071, "total_p50_ms": 552.3455, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 2
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 60.12861907265528, "throughput_mbps": 4.810289525812423, "ttfb_p50_ms": 0.067, "total_p50_ms": 555.6575, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 3
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 73.2331702367635, "throughput_mbps": 5.85865361894108, "ttfb_p50_ms": 0.074, "total_p50_ms": 530.2225, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 4
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 72.80236685971863, "throughput_mbps": 5.824189348777491, "ttfb_p50_ms": 0.0755, "total_p50_ms": 520.158, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 5
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 63.83381286588676, "throughput_mbps": 5.10670502927094, "ttfb_p50_ms": 0.116, "total_p50_ms": 841.703, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 6
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 54.83286524572619, "throughput_mbps": 4.386629219658095, "ttfb_p50_ms": 0.069, "total_p50_ms": 552.9459999999999, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 7
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 71.24738850533696, "throughput_mbps": 5.699791080426957, "ttfb_p50_ms": 0.082, "total_p50_ms": 550.728, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 8
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 68.08519126051019, "throughput_mbps": 5.4468153008408144, "ttfb_p50_ms": 0.0745, "total_p50_ms": 531.312, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 9
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 71.93178611472648, "throughput_mbps": 5.7545428891781185, "ttfb_p50_ms": 0.066, "total_p50_ms": 543.296, "connections_total": 100}
+[http1/WAN] WARM Carga B, repetição 10
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 65.71607233335688, "throughput_mbps": 5.257285786668551, "ttfb_p50_ms": 0.073, "total_p50_ms": 495.93100000000004, "connections_total": 100}
+Arquivo gravado: results/T10_http1_wan_b.json  (falhas: 0)
+---- T11_http2_wan_b: http2 | WAN | warm
+[http2/WAN] WARM Carga B, aquecimento descartado 1
+[http2/WAN] WARM Carga B, repetição 1
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 35.105365151693086, "throughput_mbps": 2.8084292121354473, "ttfb_p50_ms": 853.2049999999999, "total_p50_ms": 1427.3215, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 2
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 90.49786818466347, "throughput_mbps": 7.239829454773079, "ttfb_p50_ms": 193.686, "total_p50_ms": 650.9455, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 3
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 30.122027396386013, "throughput_mbps": 2.409762191710881, "ttfb_p50_ms": 747.8375, "total_p50_ms": 1216.9875, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 4
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 123.84052681357724, "throughput_mbps": 9.907242145086178, "ttfb_p50_ms": 106.5065, "total_p50_ms": 525.884, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 5
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 138.45918427198194, "throughput_mbps": 11.076734741758553, "ttfb_p50_ms": 123.98049999999999, "total_p50_ms": 530.2545, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 6
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 109.25379263034084, "throughput_mbps": 8.740303410427266, "ttfb_p50_ms": 123.107, "total_p50_ms": 576.663, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 7
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 61.95891400442961, "throughput_mbps": 4.956713120354368, "ttfb_p50_ms": 177.921, "total_p50_ms": 614.8945, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 8
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 23.522467102207315, "throughput_mbps": 1.8817973681765852, "ttfb_p50_ms": 1892.711, "total_p50_ms": 2804.5495, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 9
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 24.160171953195107, "throughput_mbps": 1.9328137562556085, "ttfb_p50_ms": 1544.5675, "total_p50_ms": 2527.0654999999997, "connections_total": 1}
+[http2/WAN] WARM Carga B, repetição 10
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 96.8477155228728, "throughput_mbps": 7.747817241829825, "ttfb_p50_ms": 198.895, "total_p50_ms": 583.242, "connections_total": 1}
+Arquivo gravado: results/T11_http2_wan_b.json  (falhas: 0)
+---- T12_http3_wan_b: http3 | WAN | warm
+[http3/WAN] WARM Carga B, aquecimento descartado 1
+[http3/WAN] WARM Carga B, repetição 1
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 187.3274072983118, "throughput_mbps": 14.986192583864947, "ttfb_p50_ms": 32.802, "total_p50_ms": 470.4055, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 2
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 69.54348054240147, "throughput_mbps": 5.563478443392118, "ttfb_p50_ms": 55.2615, "total_p50_ms": 1353.2869999999998, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 3
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 201.23986132447905, "throughput_mbps": 16.099188905958325, "ttfb_p50_ms": 42.914500000000004, "total_p50_ms": 455.278, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 4
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 197.79450150946246, "throughput_mbps": 15.823560120756996, "ttfb_p50_ms": 38.893, "total_p50_ms": 442.619, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 5
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 85.42843728154355, "throughput_mbps": 6.8342749825234845, "ttfb_p50_ms": 38.7485, "total_p50_ms": 1059.8345, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 6
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 89.86376738226829, "throughput_mbps": 7.189101390581462, "ttfb_p50_ms": 44.692499999999995, "total_p50_ms": 1057.8555000000001, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 7
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 78.78286325109, "throughput_mbps": 6.302629060087201, "ttfb_p50_ms": 42.688, "total_p50_ms": 1151.87, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 8
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 59.33331652067147, "throughput_mbps": 4.746665321653717, "ttfb_p50_ms": 55.717, "total_p50_ms": 1569.2185, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 9
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 34.75826356054384, "throughput_mbps": 2.780661084843507, "ttfb_p50_ms": 188.044, "total_p50_ms": 2723.218, "connections_total": 1}
+[http3/WAN] WARM Carga B, repetição 10
+{"profile": "Carga B", "requests_success": 100, "requests_failed": 0, "rps": 56.744161864017585, "throughput_mbps": 4.539532949121408, "ttfb_p50_ms": 62.188, "total_p50_ms": 1610.7875, "connections_total": 1}
+Arquivo gravado: results/T12_http3_wan_b.json  (falhas: 0)
+[netem] server_http11: qdisc netem removida
+[netem] server_http2_tls: qdisc netem removida
+[netem] server_http3_quic: qdisc netem removida
+[netem] bench_client: qdisc netem removida
+
+>>> Consolidando JSON/CSV e gerando tabelas/gráficos em analysis/ ...
+Tabelas e gráficos gravados em analysis/
+
+>>> Sucesso: T01–T12 e ensaios cold concluídos. Resultados: results/; análise: analysis/.
+
+>>> Limpando regras tc e encerrando os contêineres...
+[netem] server_http11: nenhuma qdisc netem ativa
+[netem] server_http2_tls: nenhuma qdisc netem ativa
+[netem] server_http3_quic: nenhuma qdisc netem ativa
+[netem] bench_client: nenhuma qdisc netem ativa
