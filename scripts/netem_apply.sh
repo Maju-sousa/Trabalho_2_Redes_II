@@ -1,4 +1,4 @@
-#
+#!/usr/bin/env bash
 set -euo pipefail
 
 SCENARIO="$(echo "${1:-}" | tr '[:upper:]' '[:lower:]')"

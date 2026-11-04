@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash
 set -uo pipefail
 CONTAINERS=(server_http11 server_http2_tls server_http3_quic bench_client)
 failed=0
